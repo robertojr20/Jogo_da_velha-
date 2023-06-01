@@ -1,0 +1,69 @@
+# Função para imprimir o tabuleiro
+def imprimir_tabuleiro(tabuleiro):
+    for linha in tabuleiro:
+        print("|".join(linha))
+        print("-----")
+
+# Função para verificar se um jogador ganhou
+def verificar_vitoria(tabuleiro, jogador):
+    # Verificação das linhas
+    for linha in tabuleiro:
+        if linha.count(jogador) == 3:
+            return True
+
+    # Verificação das colunas
+    for coluna in range(3):
+        if tabuleiro[0][coluna] == jogador and tabuleiro[1][coluna] == jogador and tabuleiro[2][coluna] == jogador:
+            return True
+
+    # Verificação das diagonais
+    if tabuleiro[0][0] == jogador and tabuleiro[1][1] == jogador and tabuleiro[2][2] == jogador:
+        return True
+
+    if tabuleiro[0][2] == jogador and tabuleiro[1][1] == jogador and tabuleiro[2][0] == jogador:
+        return True
+
+    return False
+
+# Função para realizar uma jogada
+def realizar_jogada(tabuleiro, jogador, linha, coluna):
+    if tabuleiro[linha][coluna] == " ":
+        tabuleiro[linha][coluna] = jogador
+        return True
+    else:
+        return False
+
+# Função para alternar o jogador
+def alternar_jogador(jogador):
+    if jogador == "X":
+        return "O"
+    else:
+        return "X"
+
+# Função principal do jogo
+def jogar_jogo_da_velha():
+    tabuleiro = [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]]
+    jogador = "X"
+
+    while True:
+        imprimir_tabuleiro(tabuleiro)
+
+        linha = int(input("Digite o número da linha (0-2): "))
+        coluna = int(input("Digite o número da coluna (0-2): "))
+
+        if realizar_jogada(tabuleiro, jogador, linha, coluna):
+            if verificar_vitoria(tabuleiro, jogador):
+                imprimir_tabuleiro(tabuleiro)
+                print("Jogador", jogador, "venceu!")
+                break
+            elif " " not in tabuleiro[0] and " " not in tabuleiro[1] and " " not in tabuleiro[2]:
+                imprimir_tabuleiro(tabuleiro)
+                print("Empate!")
+                break
+            else:
+                jogador = alternar_jogador(jogador)
+        else:
+            print("Jogada inválida. Tente novamente.")
+
+# Iniciar o jogo
+jogar_jogo_da_velha()
